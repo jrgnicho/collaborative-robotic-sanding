@@ -22,7 +22,8 @@ def generate_launch_description():
     
     
 #    xacro = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'crs.urdf.xacro')
-    xacro = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'swri_demo.urdf.xacro')
+#    xacro = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'swri_demo.urdf.xacro')
+    xacro = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'swri_demo2.urdf.xacro')
     urdf = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'crs.urdf')
     urdf_preview = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'crs_preview.urdf')
     srdf = os.path.join(get_package_share_directory('crs_support'), 'urdf', 'ur10e_robot.srdf')
@@ -53,7 +54,8 @@ def generate_launch_description():
     
     gazebo_cmd = 'gzserver' if GAZEBO_HEADLESS else 'gazebo'
     gzserver = launch.actions.ExecuteProcess(
-        cmd=['xterm', '-e', gazebo_cmd, '--verbose', '-s', 'libgazebo_ros_factory.so', '--world', gzworld],
+#        cmd=['xterm', '-e', 'gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so', '--world', gzworld],
+        cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so', '--world', gzworld],
         output='screen',   
         condition = launch.conditions.IfCondition(launch.substitutions.LaunchConfiguration('sim_robot'))
     )
@@ -99,10 +101,10 @@ def generate_launch_description():
         ])
     '''
 
-    test_process_planner = launch_ros.actions.Node(
+    process_planner_test_server = launch_ros.actions.Node(
         node_executable='crs_motion_planning_process_planner_test',
         package='crs_motion_planning',
-        node_name='process_planner_test',
+        node_name='process_test_server',
         output='screen')
         
     return launch.LaunchDescription([
@@ -129,5 +131,5 @@ def generate_launch_description():
 
         # planning
         motion_planning_server,
-        #test_process_planner,
+        process_planner_test_server,
 ])
